@@ -19,7 +19,7 @@ export async function getTOP10Senders(apiKey: string) {
 
     const grouped = _.groupBy(
       transactions,
-      (transaction) => transaction.from.user.name
+      (transaction) => transaction.from.user.name,
     );
 
     // Sum up the amounts for each sender and sort by amount
@@ -29,7 +29,7 @@ export async function getTOP10Senders(apiKey: string) {
         amount: _.sumBy(transactions, "amount"),
       })),
       "amount",
-      "desc"
+      "desc",
     );
     const totalSum = _.sumBy(sorted, "amount");
     // Get top 10 senders
