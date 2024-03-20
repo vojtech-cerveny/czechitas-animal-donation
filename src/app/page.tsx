@@ -3,8 +3,10 @@ import { getTOP10Senders } from "@/actions/request";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TableView } from "./table";
 import { MyTab } from "./my-tab";
+import { unstable_noStore } from "next/cache";
 
 export default async function Home() {
+  unstable_noStore();
   const response = await getTOP10Senders("g00dsic9bw4");
   if (!response.success) {
     return <div>Error: {response.message}</div>;
