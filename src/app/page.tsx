@@ -1,4 +1,4 @@
-import { getTOP10Senders } from "@/actions/request";
+import { getTOP10Senders, makeRequest } from "@/actions/request";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TableView } from "./table";
@@ -8,6 +8,8 @@ import { unstable_noStore } from "next/cache";
 export default async function Home() {
   unstable_noStore();
   const response = await getTOP10Senders("g00dsic9bw4");
+  const allData = await makeRequest("g00dsic9bw4");
+
   if (!response.success) {
     return <div>Error: {response.message}</div>;
   }
@@ -26,7 +28,7 @@ export default async function Home() {
             <TabsTrigger value="my">My statistics</TabsTrigger>
           </TabsList>
           <TabsContent value="animal-donation">
-            <TableView senders={response.data} />
+            <TableView senders={response.data} allData={allData} />
           </TabsContent>
           <TabsContent value="my">
             <MyTab />

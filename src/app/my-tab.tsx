@@ -50,7 +50,7 @@ export function MyTab() {
           Generate stats
         </Button>
       </div>
-      <TableView senders={senders} />
+      <TableView senders={senders} allData={undefined}/>
     </div>
   );
 }

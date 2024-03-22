@@ -3,6 +3,21 @@ import { errorResponse, successResponse } from "@/lib/response";
 import axios from "axios";
 import _ from "lodash";
 
+export async function makeRequest(apiKey: string) {
+  let config = {
+    url: "https://czechibank.ostrava.digital/api/transactions",
+    method: "get",
+    maxBodyLength: Infinity,
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  };
+  const response = await axios(config);
+  const transactions = response.data.data.transactions;
+
+  return transactions;
+}
+
 export async function getTOP10Senders(apiKey: string) {
   let config = {
     url: "https://czechibank.ostrava.digital/api/transactions",
