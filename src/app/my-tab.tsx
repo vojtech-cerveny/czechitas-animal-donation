@@ -1,6 +1,6 @@
 "use client";
 
-import { getTOP10Senders } from "@/actions/request";
+import { getTOP100Senders } from "@/actions/request";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TableView } from "./table";
@@ -22,6 +22,9 @@ export function MyTab() {
   return (
     <div>
       <div className="flex flex-col w-1/2 gap-2 mx-auto">
+        <div>
+          You can add your own API key here to generate your own statistics. Check who are the top 100 donators and how much they donated to you.
+        </div>
         <Input
           id="apiKey"
           name={"apiKey"}
@@ -33,7 +36,7 @@ export function MyTab() {
         />
         <Button
           onClick={async () => {
-            const downloadedSenders = await getTOP10Senders(apiKey);
+            const downloadedSenders = await getTOP100Senders(apiKey);
             if (!downloadedSenders.success) {
               console.error("Error: ", downloadedSenders.message);
               toast({
@@ -50,7 +53,7 @@ export function MyTab() {
           Generate stats
         </Button>
       </div>
-      <TableView senders={senders} allData={undefined}/>
+      <TableView senders={senders} allData={undefined} />
     </div>
   );
 }

@@ -18,7 +18,7 @@ export async function makeRequest(apiKey: string) {
   return transactions;
 }
 
-export async function getTOP10Senders(apiKey: string) {
+export async function getTOP100Senders(apiKey: string) {
   let config = {
     url: "https://czechibank.ostrava.digital/api/transactions",
     method: "get",
@@ -34,7 +34,7 @@ export async function getTOP10Senders(apiKey: string) {
 
     const grouped = _.groupBy(
       transactions,
-      (transaction) => transaction.from.user.name,
+      (transaction) => transaction.from.user.name
     );
 
     // Sum up the amounts for each sender and sort by amount
@@ -44,14 +44,14 @@ export async function getTOP10Senders(apiKey: string) {
         amount: _.sumBy(transactions, "amount"),
       })),
       "amount",
-      "desc",
+      "desc"
     );
     const totalSum = _.sumBy(sorted, "amount");
     // Get top 10 senders
-    const top10 = _.take(sorted, 10);
+    const top100 = _.take(sorted, 100);
 
-    console.log({ senders: top10, total: totalSum });
-    return successResponse("Success", { senders: top10, total: totalSum });
+    console.log({ senders: top100, total: totalSum });
+    return successResponse("Success", { senders: top100, total: totalSum });
   } catch (error) {
     return errorResponse("Failed to fetch data");
   }
