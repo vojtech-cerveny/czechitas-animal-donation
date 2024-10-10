@@ -10,8 +10,10 @@ export default async function Home() {
   unstable_noStore();
   let response;
   let allData;
+
+  console.log("API_KEY: ", process.env.API_KEY);
+
   try {
-    console.log("API_KEY: ", process.env.API_KEY);
     response = await getTOP100Senders(process.env.API_KEY!);
     allData = await makeRequest(process.env.API_KEY!);
 
