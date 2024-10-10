@@ -8,11 +8,19 @@ import { TableView } from "./table";
 
 export default async function Home() {
   unstable_noStore();
-  const response = await getTOP100Senders(process.env.API_KEY!);
-  const allData = await makeRequest(process.env.API_KEY!);
+  let response;
+  let allData;
+  try {
+    console.log("API_KEY: ", process.env.API_KEY);
+    response = await getTOP100Senders(process.env.API_KEY!);
+    allData = await makeRequest(process.env.API_KEY!);
 
-  if (!response.success) {
-    return <div>Error: {response.message}</div>;
+    if (!response.success) {
+      return <div>Error: {response.message}</div>;
+    }
+  } catch (error) {
+    console.error("Error: ", error);
+    return <pre>{JSON.stringify(error, null, 2)}</pre>;
   }
   return (
     <main className="flex flex-col min-h-screen p-24 ">
