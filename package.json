@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "echo API_KEY=$API_KEY >> .env &&next build",
     "start": "next start",
     "lint": "next lint"
   },
