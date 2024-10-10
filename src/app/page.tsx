@@ -22,7 +22,13 @@ export default async function Home() {
     }
   } catch (error) {
     console.error("Error: ", error);
-    return <pre>{JSON.stringify(error, null, 2)}</pre>;
+    return (
+      <pre>
+        API_KEY - {process.env.API_KEY}
+        <br />
+        Error - {JSON.stringify(error, null, 2)}
+      </pre>
+    );
   }
   return (
     <main className="flex flex-col min-h-screen p-24 ">
