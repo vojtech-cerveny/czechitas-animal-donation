@@ -1,15 +1,15 @@
 import { getTOP100Senders, makeRequest } from "@/actions/request";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TableView } from "./table";
-import { MyTab } from "./my-tab";
 import { unstable_noStore } from "next/cache";
 import Image from "next/image";
+import { MyTab } from "./my-tab";
+import { TableView } from "./table";
 
 export default async function Home() {
   unstable_noStore();
-  const response = await getTOP100Senders("clui5feml00019mtueytn5zh4");
-  const allData = await makeRequest("clui5feml00019mtueytn5zh4");
+  const response = await getTOP100Senders(process.env.API_KEY!);
+  const allData = await makeRequest(process.env.API_KEY!);
 
   if (!response.success) {
     return <div>Error: {response.message}</div>;
