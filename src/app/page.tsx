@@ -1,6 +1,7 @@
 import { getTOP100Senders, makeRequest } from "@/actions/request";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import "dotenv/config";
 import { unstable_noStore } from "next/cache";
 import Image from "next/image";
 import { MyTab } from "./my-tab";
