@@ -23,13 +23,13 @@ export function MyTab() {
     <div>
       <div className="flex flex-col w-1/2 gap-2 mx-auto">
         <div>
-          You can add your own API key here to generate your own statistics. Check who are the top 100 donators and how much they donated to you.
+          You can add your own Bearer token here to generate your own statistics. Check who are the top 100 donators and how much they donated to you.
         </div>
         <Input
           id="apiKey"
           name={"apiKey"}
           autoComplete="on"
-          placeholder="API KEY"
+          placeholder="Bearer token"
           type="password"
           value={apiKey}
           onChange={(e) => setApiKey(e.currentTarget.value)}
@@ -42,7 +42,7 @@ export function MyTab() {
               toast({
                 title: "Oh no!",
                 description:
-                  "Are you sure you have the right API key? It returned an error. 🥺",
+                  "Are you sure you have the right Bearer token? It returned an error. 🥺",
               });
               return;
             } else {

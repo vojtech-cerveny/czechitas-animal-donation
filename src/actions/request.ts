@@ -18,13 +18,13 @@ export async function makeRequest(apiKey: string) {
   return transactions;
 }
 
-export async function getTOP100Senders(apiKey: string) {
+export async function getTOP100Senders(bearerToken: string) {
   let config = {
     url: "https://czechibank.ostrava.digital/api/transactions",
     method: "get",
     maxBodyLength: Infinity,
     headers: {
-      Authorization: `Bearer ${apiKey}`,
+      Authorization: `Bearer ${bearerToken}`,
     },
   };
 
