@@ -1,59 +1,49 @@
-"use client";
-
 import { getTOP100Senders } from "@/actions/request";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Suspense } from "react";
 import { TableView } from "./table";
-import { useState } from "react";
-import useLocalStorage from "@/lib/useLocalStorage";
-import { useToast } from "@/components/ui/use-toast";
 
-export function MyTab() {
-  const { toast } = useToast();
-  const [apiKey, setApiKey] = useLocalStorage("apiKey", "");
-  const [senders, setSenders] = useState<{
-    senders: { sender: string; amount: number }[];
-    total: number;
-  }>({
-    senders: [],
-    total: 0,
-  });
-
+function Loading() {
   return (
-    <div>
-      <div className="flex flex-col w-1/2 gap-2 mx-auto">
-        <div>
-          You can add your own Bearer token here to generate your own statistics. Check who are the top 100 donators and how much they donated to you.
-        </div>
-        <Input
-          id="apiKey"
-          name={"apiKey"}
-          autoComplete="on"
-          placeholder="Bearer token"
-          type="password"
-          value={apiKey}
-          onChange={(e) => setApiKey(e.currentTarget.value)}
-        />
-        <Button
-          onClick={async () => {
-            const downloadedSenders = await getTOP100Senders(apiKey);
-            if (!downloadedSenders.success) {
-              console.error("Error: ", downloadedSenders.message);
-              toast({
-                title: "Oh no!",
-                description:
-                  "Are you sure you have the right Bearer token? It returned an error. 🥺",
-              });
-              return;
-            } else {
-              setSenders(downloadedSenders.data);
-            }
-          }}
-        >
-          Generate stats
-        </Button>
-      </div>
-      <TableView senders={senders} allData={undefined} />
+    <div className="flex items-center justify-center w-full h-64">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
     </div>
+  );
+}
+
+function ErrorDisplay({ message }: { message: string }) {
+  return (
+    <div className="flex items-center justify-center w-full h-64 text-red-600">
+      <div className="text-center">
+        <h3 className="text-xl font-bold mb-2">Error</h3>
+        <p>{message}</p>
+      </div>
+    </div>
+  );
+}
+
+async function SendersContent() {
+  try {
+    const downloadedSenders = await getTOP100Senders("11");
+
+    if (!downloadedSenders.success) {
+      return <ErrorDisplay message={downloadedSenders.message} />;
+    }
+
+    return (
+      <div className="w-full">
+        <TableView senders={downloadedSenders.data} allData={undefined} />
+      </div>
+    );
+  } catch (error) {
+    console.error("Error fetching senders:", error);
+    return <ErrorDisplay message="Failed to load sender data" />;
+  }
+}
+
+export async function MyTab() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <SendersContent />
+    </Suspense>
   );
 }
