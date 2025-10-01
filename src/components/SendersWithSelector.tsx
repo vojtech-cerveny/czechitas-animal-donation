@@ -1,13 +1,13 @@
 "use client";
 
-import { getTOP100Senders, getApiKey } from "@/actions/request";
+import { getApiKey, getTOP100Senders } from "@/actions/request";
 import { TableView } from "@/app/table";
 import { useEffect, useState } from "react";
 import { BaseUrlSelector } from "./BaseUrlSelector";
 
 const baseUrls = [
-  "https://praha.czechibank.ostrava.digital/api/v1",
   "https://ostrava.czechibank.ostrava.digital/api/v1",
+  "https://praha.czechibank.ostrava.digital/api/v1",
 ];
 
 function Loading() {
