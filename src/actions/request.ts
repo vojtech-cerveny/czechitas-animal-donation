@@ -3,6 +3,15 @@ import { errorResponse, successResponse } from "@/lib/response";
 import axios from "axios";
 import _ from "lodash";
 
+export async function getApiKey(baseUrl: string) {
+  if (baseUrl.includes("praha")) {
+    return process.env.PRAHA_API_KEY || "11";
+  } else if (baseUrl.includes("ostrava")) {
+    return process.env.OSTRAVA_API_KEY || "22";
+  }
+  return process.env.PRAHA_API_KEY || "11"; // fallback to Praha
+}
+
 interface Transaction {
   id: string;
   amount: number;
@@ -42,14 +51,15 @@ interface ApiResponse {
   };
 }
 
-export async function makeRequest(apiKey: string) {
+export async function makeRequest(apiKey: string, baseUrl: string) {
   try {
-    const headers = { "x-api-key": "11" };
-    const baseUrl = "https://czechibank.ostrava.digital/api/v1";
-    const response = await axios.get(
-      `${baseUrl}/transactions?limit=1000`,
-      { withCredentials: false, headers }
-    ).then((res) => res.data);
+    const headers = { "x-api-key": apiKey };
+    const response = await axios
+      .get(`${baseUrl}/transactions?limit=1000`, {
+        withCredentials: false,
+        headers,
+      })
+      .then((res) => res.data);
 
     if (!response.success) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -68,11 +78,11 @@ export async function makeRequest(apiKey: string) {
   }
 }
 
-export async function getTOP100Senders(apiKey: string) {
+export async function getTOP100Senders(apiKey: string, baseUrl: string) {
   try {
     console.log("Fetching transactions...");
     console.log(apiKey);
-    const transactions = await makeRequest(apiKey);
+    const transactions = await makeRequest(apiKey, baseUrl);
 
     const grouped = _.groupBy(
       transactions,
